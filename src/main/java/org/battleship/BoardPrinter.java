@@ -7,17 +7,37 @@ public class BoardPrinter {
     public BoardPrinter(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
     }
-    public static void printBoard(){
+
+    public static void printBoard() {
         Field[][] fields = gameBoard.getFields();
         System.out.print(" ");
-        for (int n = 1; n <= 10; n++){
-            System.out.print(n+ " ");
+        for (int n = 1; n <= 10; n++) {
+            System.out.print(n + " ");
         }
         System.out.println();
-        for (int n = 0; n < fields.length; n++){
-            System.out.print((char)('A'+n)+ " ");
-            for (int i = 0; i < fields[0].length; i++){
-                System.out.print(fields[n][i].getFieldType().getFieldSign()+" ");
+        for (int n = 0; n < fields.length; n++) {
+            System.out.print((char) ('A' + n) + " ");
+            for (int i = 0; i < fields[0].length; i++) {
+                System.out.print(fields[n][i].getFieldType().getFieldSign() + " ");
+            }
+            System.out.println();
+        }
+    }
+    public static void printBoardHidden() {
+        Field[][] fields = gameBoard.getFields();
+        System.out.print(" ");
+        for (int n = 1; n <= 10; n++) {
+            System.out.print(n + " ");
+        }
+        System.out.println();
+        for (int n = 0; n < fields.length; n++) {
+            System.out.print((char) ('A' + n) + " ");
+            for (int i = 0; i < fields[0].length; i++) {
+                if (fields[n][i].getFieldType() == FieldType.SHIP_FIELD) {
+                    System.out.print(FieldType.HIDDEN_FIELD_SHIP.getFieldSign()+" ");
+                } else {
+                    System.out.print(fields[n][i].getFieldType().getFieldSign() + " ");
+                }
             }
             System.out.println();
         }

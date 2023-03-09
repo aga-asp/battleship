@@ -1,8 +1,6 @@
 package org.battleship;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Player {
 
@@ -10,13 +8,19 @@ public class Player {
     int Score;
     GameBoard gameBoard;
 
+    GameBoard opponentHiddenGameBoard;
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setOpponentHiddenGameBoard(GameBoard opponentHiddenGameBoard) {
+        this.opponentHiddenGameBoard = opponentHiddenGameBoard;
+    }
+
     public Player() {
     }
 
-    public void Player(String playerName, GameBoard gameBoard) {
-        this.playerName = playerName;
-        this.gameBoard = new GameBoard();
-    }
 
     public void setScore(int score) {
         Score = score;
@@ -30,25 +34,25 @@ public class Player {
         this.playerName = playerName;
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
     public void setGameBoard(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
     }
 
-    // TODO: 06.03.2023 change from int to enum
+    public int getScore() {
+        return Score;
+    }
+
     // TODO: 06.03.2023 change from list to double coords
-    public void createPlayerAction(Scanner scanner, int numberOfShip) {
-        PlayerAction playerAction = new PlayerAction(this.gameBoard);
-        playerAction.setCurrentShipNumber(numberOfShip);
+    public void createPlayerAction(Scanner scanner, ShipFleet shipFleet, MoveType moveType) {
+        PlayerActionShipCreation playerActionShipCreation = new PlayerActionShipCreation(moveType);
+        playerActionShipCreation.setCurrentShip(shipFleet);
         do {
             String input = scanner.nextLine();
             List<String> inputList = Arrays.asList(input.split(" "));
-            playerAction.setUserInputLine(inputList);
-            playerAction.playerInputCheck();
-        } while (!playerAction.isPlayerInputCorrect());
+            Collections.sort(inputList);
+            playerActionShipCreation.checkAllConditionsToPutOnGameBoard(this.gameBoard, this.opponentHiddenGameBoard, inputList);
+        } while (!playerActionShipCreation.isPlayerInputCorrect());
 
     }
+
 }

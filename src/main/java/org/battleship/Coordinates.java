@@ -2,6 +2,7 @@ package org.battleship;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Math.abs;
 
@@ -53,12 +54,29 @@ public class Coordinates {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates that = (Coordinates) o;
+        return xValue == that.xValue && yValue == that.yValue && Objects.equals(inputValue, that.inputValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(xValue, yValue, inputValue);
+    }
+
     public static List<Coordinates> stringListToCoordinates(List<String> inputList) {
         List<Coordinates> coordinatesList = new ArrayList<>();
         for (String s : inputList) {
             coordinatesList.add(new Coordinates(s));
         }
         return coordinatesList;
+    }
+    public static Coordinates stringListToCoordinates(String coordinatesSting) {
+
+        return new Coordinates(coordinatesSting);
     }
 
     public static boolean coordinatesOrientationCheck(List<Coordinates> coordinatesList) {
@@ -72,7 +90,11 @@ public class Coordinates {
         return (abs(coordinatesList.get(0).xValue - coordinatesList.get(1).xValue) == shipLength) ||
                 (abs(coordinatesList.get(0).yValue - coordinatesList.get(1).yValue) == shipLength);
     }
-    public static boolean coordinatesFreeFieldsCheck(List<Coordinates> coordinatesList, GameBoard gameBoard) {
-        return gameBoard.checkIfFieldsRangeIsAvailable(coordinatesList.get(0), coordinatesList.get(1));
+
+    public static boolean coordinatesFreeFieldsCheckShipPlacement(List<Coordinates> coordinatesList, GameBoard gameBoard) {
+        return gameBoard.checkIfFieldsRangeIsAvailableForShip(coordinatesList.get(0), coordinatesList.get(1));
+    }
+    public static boolean coordinatesHitOrMisPlacementCheck(Coordinates coordinates, GameBoard gameBoard){
+        return gameBoard.checkFieldForHitOrMisPlacement(coordinates);
     }
 }

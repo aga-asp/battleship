@@ -6,6 +6,7 @@ public class Field {
     FieldType fieldType;
 
 
+
     public Field(Coordinates coordinate, FieldType fieldType) {
         this.coordinate = coordinate;
         this.fieldType = fieldType;
